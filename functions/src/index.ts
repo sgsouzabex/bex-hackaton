@@ -1,0 +1,1 @@
+export { bexUpDossieFunction } from './dossie-bex';

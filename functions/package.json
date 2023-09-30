@@ -1,16 +1,19 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "lib/index.js",
+  "name": "functions",
   "scripts": {
-    "test": "jest",
+    "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
-    "start": "ts-node index.ts",
-    "dev": "ts-node-dev --inspect=0.0.0.0:9228 --transpile-only --ignore-watch node_modules --exit-child --respawn index.ts"
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --inspect-functions --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
   "dependencies": {
     "@google-cloud/pubsub": "^2.18.5",
     "@google-cloud/storage": "^5.18.2",
@@ -18,6 +21,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.17.2",
     "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
     "moment": "^2.29.1",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
@@ -25,8 +29,15 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
-    "@types/node": "^17.0.8",
+    "@types/node": "^20.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^4.8.3"
-  }
+    "typescript": "^4.5.4"
+  },
+  "private": true
 }
