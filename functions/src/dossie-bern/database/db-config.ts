@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 
 export const AppDataSourceDBBERN = new DataSource({
-  type: "sqlserver",
+  type: "mssql",
   host: process.env.DB_HOST_BERN,
   port: Number(process.env.DB_PORT_BERN) ?? 1433,
   username: process.env.DB_USER_NAME_BERN,
@@ -11,6 +11,6 @@ export const AppDataSourceDBBERN = new DataSource({
   database: process.env.DB_DATABASE_BERN,
   synchronize: false,
   logging: false,
-  / entities: [__dirname + "/entities_bex/*.{js,ts}"],
+  entities: [__dirname + "/entities_bern/*.{js,ts}"],
   // migrations: [__dirname + "/migrations_bex/*.{js,ts}"],
 });
