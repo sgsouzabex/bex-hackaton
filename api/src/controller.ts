@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import * as Service from "./service"
+import * as DossieService from "./service"
 import { DossieBody } from "types/dossie";
 
 /**
@@ -8,7 +8,7 @@ import { DossieBody } from "types/dossie";
 export const createDossie = async (req: Request<unknown, DossieBody>, res: Response) => {
   try {
 
-    const status = Service.processDocument(req.body)
+    const status = await DossieService.processDocument(req.body)
 
     return res.json({
       status, body: req.body
