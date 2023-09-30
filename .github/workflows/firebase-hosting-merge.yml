@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: cd functions
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
