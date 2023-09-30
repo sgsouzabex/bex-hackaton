@@ -9,8 +9,8 @@ const validationSchema = toTypedSchema(
     endDate: z.string().regex(/\d{4}-\d{2}-\d{2}/),
   })
     .refine(
-      ({ startDate, endDate }) => new Date(endDate) > new Date(startDate),
-      { message: 'Competência Final deve ser posterior a Competência Inicial', path: ['endDate'] },
+      ({ startDate, endDate }) => new Date(endDate) >= new Date(startDate),
+      { message: 'Competência Final deve ser maior ou igual a Competência Inicial', path: ['endDate'] },
     ),
 )
 
@@ -28,7 +28,7 @@ const { value: endDateValue, errorMessage: endDateError } = useField<string>('en
       Competência
     </h1>
 
-    <div class="flex gap-x-2">
+    <div class="flex gap-2 flex-col md:flex-row">
       <label class="flex-1">
         <span class="text-gray-400">Competência Inicial</span>
         <UiInput v-model="startDateValue" type="date" />

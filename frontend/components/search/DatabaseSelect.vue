@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import type { Tabela } from '~/types'
+
 const searchStore = useSearchStore()
-const confirmReset = ref<string>()
+const confirmReset = ref<Tabela>()
 </script>
 
 <template>
-  <div class="absolute top-4 right-4 w-52">
-    <UiSelect :model-value="searchStore.values.one" @update:model-value="confirmReset = $event">
+  <div class="md:absolute md:top-4 md:right-4 md:w-52 m-2 md:m-0">
+    <UiSelect :model-value="searchStore.values.one" @update:model-value="confirmReset = $event as Tabela">
       <UiSelectTrigger>
         <UiSelectValue placeholder="" />
       </UiSelectTrigger>

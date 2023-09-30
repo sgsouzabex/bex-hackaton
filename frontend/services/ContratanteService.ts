@@ -1,9 +1,8 @@
 import { useApi } from './api'
-
-type Tabela = `documentos_v${1 | 2 | 3}`
+import type { ContratanteResponse, Tabela } from '~/types'
 
 function list(tabela: Tabela) {
-  return useApi(`listar-contratantes/${tabela}`)
+  return useApi<ContratanteResponse>(`listar-contratantes/${tabela}`)
 }
 
 export default { list }

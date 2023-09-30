@@ -1,13 +1,12 @@
 <script setup lang="ts">
+import { Check, ChevronsUpDown } from 'lucide-vue-next'
+import { cn } from '~/lib/utils'
+import { ColaboradorService } from '~/services'
+import type { ColaboradorResponse } from '~/types'
+
 const searchStore = useSearchStore()
 
 const open = ref(false)
-
-const options = [
-  { value: 'apple', label: 'Apple' },
-  { value: 'banana', label: 'Banana' },
-  { value: 'grape', label: 'Grape' },
-]
 
 const value = computed({
   get() {
@@ -17,6 +16,27 @@ const value = computed({
     searchStore.values.five = value
   },
 })
+
+function handleToggle(option: ColaboradorResponse[number]) {
+  value.value.has(option) ? value.value.delete(option) : value.value.add(option)
+}
+
+function short(value: string) {
+  return value.length > 20 ? `${value.slice(0, 20)}...` : value
+}
+
+watch(() => searchStore.values.three, async (contratada) => {
+  if (!contratada)
+    return
+
+  const response = await ColaboradorService.list({
+    tabela: searchStore.values.one!,
+    contratanteId: searchStore.values.two!,
+    contratadaId: contratada,
+  })
+
+  searchStore.lists.five = response
+}, { immediate: true })
 </script>
 
 <template>
@@ -35,34 +55,34 @@ const value = computed({
               variant="outline"
               role="combobox"
               :aria-expanded="open"
-              class="w-full justify-between"
+              class="w-full min-h-10 h-auto justify-between"
             >
-              <div class="space-x-1">
-                <span v-for="item in value" :key="item" class="bg-gray-200 p-1 rounded">{{ item }}</span>
+              <div class="flex flex-wrap gap-1 max-w-full overflow-hidden">
+                <span
+                  v-for="item in value"
+                  :key="item.colaborador_id"
+                  class="bg-gray-200 p-1 rounded whitespace-nowrap"
+                >
+                  {{ short(item.colaborador_nome) }}
+                </span>
               </div>
-              <!-- {{ value ? options.find((option) => option.value === value)?.label : 'Select framework...' }} -->
 
-              <!-- <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" /> -->
+              <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </UiButton>
           </UiPopoverTrigger>
-          <UiPopoverContent class="w-[200px] p-0">
+          <UiPopoverContent class="w-[500px] p-0">
             <UiCommand>
-              <UiCommandInput placeholder="Buscar contratada" />
-              <UiCommandEmpty>Nenhuma contratada encontrada</UiCommandEmpty>
-              <UiCommandGroup>
+              <UiCommandInput placeholder="Buscar documento" />
+              <UiCommandEmpty>Nenhuma documento encontrado</UiCommandEmpty>
+              <UiCommandGroup class="max-h-52 overflow-auto">
                 <UiCommandItem
-                  v-for="option in options"
-                  :key="option.value"
-                  :value="option.value"
-                  @click="value.has(option.value) ? value.delete(option.value) : value.add(option.value)"
+                  v-for="option in searchStore.lists.five"
+                  :key="option.colaborador_id"
+                  :value="option.colaborador_nome"
+                  @click="handleToggle(option)"
                 >
-                  <!-- <Check -->
-                  <!--   :class="cn( -->
-                  <!--     'mr-2 h-4 w-4', -->
-                  <!--     value.some(v => v === option.value) ? 'opacity-100' : 'opacity-0', -->
-                  <!--   )" -->
-                  <!-- /> -->
-                  {{ option.label }}
+                  <Check :class="cn('mr-2 h-4 w-4', value.has(option) ? 'opacity-100' : 'opacity-0')" />
+                  {{ option.colaborador_nome }}
                 </UiCommandItem>
               </UiCommandGroup>
             </UiCommand>

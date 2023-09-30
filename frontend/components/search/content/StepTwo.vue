@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ContratatadaService } from '@/services'
+import { ContratanteService } from '~/services'
 
 const searchStore = useSearchStore()
 
-onMounted(() => {
-  const response = ContratatadaService.list(searchStore.values.one!)
-})
+watch(() => searchStore.values.one, async (system) => {
+  if (!system)
+    return
+
+  const response = await ContratanteService.list(system)
+
+  searchStore.lists.two = response
+}, { immediate: true })
 </script>
 
 <template>
@@ -24,8 +29,12 @@ onMounted(() => {
           </UiSelectTrigger>
           <UiSelectContent>
             <UiSelectGroup>
-              <UiSelectItem value="apple">
-                Apple
+              <UiSelectItem
+                v-for="item in searchStore.lists.two"
+                :key="item.contratante_id"
+                :value="item.contratante_id.toString()"
+              >
+                {{ item.contratante_descricao }}
               </UiSelectItem>
             </UiSelectGroup>
           </UiSelectContent>

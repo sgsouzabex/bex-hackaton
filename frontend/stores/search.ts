@@ -1,44 +1,64 @@
+import type { ColaboradorResponse, ContratadaResponse, ContratanteResponse, ObjetoAnaliseResponse, Tabela } from '@/types'
+
 function initialValues() {
   return {
-    one: undefined,
-    two: undefined,
-    three: undefined,
-    four: new Set<string>([]),
-    five: new Set<string>([]),
-    six: { startDate: undefined, endDate: undefined },
+    one: undefined as Tabela | undefined,
+    two: undefined as string | undefined,
+    three: undefined as string | undefined,
+    four: new Set<ObjetoAnaliseResponse[number]>([]),
+    five: new Set<ColaboradorResponse[number]>([]),
+    six: {
+      startDate: undefined as string | undefined,
+      endDate: undefined as string | undefined,
+    },
   }
 }
 
 function initialLists() {
   return {
-    one: [{ label: 'V1', value: 'documentos_v1' }, { label: 'V2', value: 'documentos_v2' }, { label: 'V3', value: 'documentos_v3' }, { label: 'BexUp', value: 'BexUp' }],
-    two: [{ label: 'Apple', value: 'apple' }, { label: 'Google', value: 'google' }, { label: 'Microsoft', value: 'microsoft' }],
-    three: [{ label: 'Apple', value: 'apple' }, { label: 'Google', value: 'google' }, { label: 'Microsoft', value: 'microsoft' }],
-    four: [{ label: 'Apple', value: 'apple' }, { label: 'Google', value: 'google' }, { label: 'Microsoft', value: 'microsoft' }],
-    five: [{ label: 'Apple', value: 'apple' }, { label: 'Google', value: 'google' }, { label: 'Microsoft', value: 'microsoft' }],
+    one: [
+      { label: 'V1', value: 'documentos_v1' },
+      { label: 'V2', value: 'documentos_v2' },
+      { label: 'V3', value: 'documentos_v3' },
+    ] as const,
+    two: [] as ContratanteResponse,
+    three: [] as ContratadaResponse,
+    four: [] as ObjetoAnaliseResponse,
+    five: [] as ColaboradorResponse,
   }
 }
 
 const useSearchStore = defineStore('search', () => {
   const step = ref(1)
-  const values = ref(initialValues())
-  const lists = ref(initialLists())
+  const values = reactive(initialValues())
+  const lists = reactive(initialLists())
   const valid = computed(() => ({
-    one: !!values.value.one,
-    two: !!values.value.two,
-    three: !!values.value.three,
-    four: !!values.value.four.size,
-    five: !!values.value.five.size,
-    six: !!values.value.six.startDate && !!values.value.six.endDate,
+    one: !!values.one,
+    two: !!values.two,
+    three: !!values.three,
+    four: !!values.four.size,
+    five: !!values.five.size,
+    six: !!values.six.startDate && !!values.six.endDate,
   }))
 
   function reset() {
     step.value = 1
-    values.value = (initialValues())
-    lists.value = initialLists()
+    values.two = undefined
+    values.three = undefined
+    values.four.clear()
+    values.five.clear()
+    values.six = {
+      startDate: undefined,
+      endDate: undefined,
+    }
+
+    lists.two = []
+    lists.three = []
+    lists.four = []
+    lists.five = []
   }
 
-  watch(() => values.value.one, (_system, oldSystem) => {
+  watch(() => values.one, (_system, oldSystem) => {
     if (oldSystem !== undefined)
       reset()
   })

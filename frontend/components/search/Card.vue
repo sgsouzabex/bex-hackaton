@@ -21,8 +21,8 @@ const stepLabels = [
 </script>
 
 <template>
-  <UiCard class="p-2 flex gap-x-2 h-[400px] w-[1000px] max-w-full mx-auto relative">
-    <UiCard class="p-2 flex justify-around  flex-col flex-[1]">
+  <UiCard class="p-2 flex gap-2 h-[500px] w-[1000px] max-w-full flex-col md:flex-row mx-auto relative">
+    <UiCard class="p-2 flex justify-around md:flex-col md:flex-[1] overflow-auto items-center md:items-baseline">
       <SearchStep v-for="(label, step) in stepLabels" :key="step + 1" :="{ label, step: step+1 }" />
     </UiCard>
     <UiCard class="flex flex-col flex-[3]">

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{ modelValue: string | undefined }>()
+import type { Tabela } from '~/types'
+
+const props = defineProps<{ modelValue: Tabela | undefined }>()
 const emit = defineEmits<{ 'update:modelValue': [undefined] }>()
 const value = useVModel(props, 'modelValue', emit)
 const searchStore = useSearchStore()
