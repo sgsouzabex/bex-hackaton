@@ -36,5 +36,5 @@ const listener = async (req: functions.Request, res: functions.Response) => {
   }
 };
 
-export const bexUpDossieFunction = functions.https
+export const bexUpDossie = functions.https
   .onRequest(listener);

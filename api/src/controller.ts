@@ -1,14 +1,14 @@
 import { Request, Response } from "express"
-import * as DossieService from "./service"
+import * as DossieService from "./dossie-service"
 import { DossieBody } from "types/dossie";
 
 /**
  * Create a new dossie from provided parameters
  */
-export const createDossie = async (req: Request<unknown, DossieBody>, res: Response) => {
+export const createDossie = async (req: Request<unknown, DossieBody[]>, res: Response) => {
   try {
 
-    const status = await DossieService.processDocument(req.body)
+    const status = await DossieService.startProcess(req.body)
 
     return res.json({
       status, body: req.body

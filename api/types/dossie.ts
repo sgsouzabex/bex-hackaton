@@ -1,9 +1,21 @@
+import { SystemsConfig } from "./system";
+
 export interface DossieBody {
-    contratante: number
-    fornecedor: number
-    colaboradores?: number[]
-    documentos: number[]
-    dataInicial: string
-    dataFinal: string
-    sistema: string
+  contractor: number;
+  supplier: number;
+  employees?: number[];
+  documents: number[];
+  startDate: string;
+  endDate: string;
+  system: string;
+}
+
+export interface SingleDossieRequest {
+  contractor: number;
+  supplier: number;
+  employee: number;
+  documents: number[];
+  startDate: string;
+  endDate: string;
+  config: SystemsConfig;
 }

@@ -1,1 +1,1 @@
-export { bexUpDossieFunction } from './dossie-bex';
+export { bexUpDossie } from './dossie-bex';

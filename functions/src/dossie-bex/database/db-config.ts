@@ -11,6 +11,6 @@ export const AppDataSourceDBBEX = new DataSource({
   database: process.env.DB_DATABASE_BEX,
   synchronize: false,
   logging: false,
-  / entities: [__dirname + "/entities_bex/*.{js,ts}"],
+  entities: [__dirname + "/entities_bex/*.{js,ts}"],
   // migrations: [__dirname + "/migrations_bex/*.{js,ts}"],
 });
