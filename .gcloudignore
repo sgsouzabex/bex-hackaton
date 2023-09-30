@@ -1,0 +1,3 @@
+# include lib/ folder to deploy in gcloud
+# this folder is included in .gitignore but is required in gcloud
+!lib/**
