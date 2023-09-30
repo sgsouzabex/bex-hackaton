@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getSystemConfig } from "../systems";
 import { DossieBody, SingleDossieRequest } from "types/dossie";
 import db from "../database/db-config";

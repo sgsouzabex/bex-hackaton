@@ -25,9 +25,21 @@ export class Dossie extends BaseModel {
   @Column()
   qtde_colaboradores!: number;
 
+  @Column({ type: "date" })
+  data_inicial!: Date;
+
+  @Column({ type: "date" })
+  data_final!: Date;
+
+  @Column()
+  colaborador!: number;
+
   @Column()
   status!: string;
 
-  @OneToMany(() => DossieDocumentos, (dossieDocumentos) => dossieDocumentos.dossie)
+  @OneToMany(
+    () => DossieDocumentos,
+    (dossieDocumentos) => dossieDocumentos.dossie
+  )
   documentos: DossieDocumentos[];
 }

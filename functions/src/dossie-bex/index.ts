@@ -20,6 +20,8 @@ const listener = async (req: functions.Request, res: functions.Response) => {
 
     const connection = await db.getManager();
 
+    res.json({ status: "PROCESSING" });
+
     const foundDocuments = await connection.query<BexDocumentsResponse[]>(
       BEX_DOCUMENTS_QUERY(documents),
       [contractor, supplier, employee, startDate, endDate]
@@ -29,8 +31,6 @@ const listener = async (req: functions.Request, res: functions.Response) => {
     // TODO: Salvar os documentos na base
 
     logger.info("BexUP Dossie: finished.");
-
-    res.json({ status: "PROCESSING", foundDocuments });
   } catch (error) {
     logger.error("BexUP Dossie: failed.", error);
 

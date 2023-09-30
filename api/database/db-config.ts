@@ -26,7 +26,11 @@ class Database {
         connection = await connection.connect();
       }
     } else {
-      const connectionOptions: ConnectionOptions = {
+      connection = await createConnection({
+        options: {
+          encrypt: true,
+          trustServerCertificate: true,
+        },
         type: "mssql",
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT),
@@ -36,8 +40,7 @@ class Database {
         synchronize: false,
         logging: false,
         entities: [__dirname + "/entities/*.{js,ts}"],
-      };
-      connection = await createConnection(connectionOptions);
+      });
     }
 
     return connection;
