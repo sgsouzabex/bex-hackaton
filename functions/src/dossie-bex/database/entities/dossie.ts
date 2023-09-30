@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { DossieDocumentos } from "./dossie-document";
-import { BaseModel } from "./baseModel";
+import { BaseModel } from "../baseModel";
 
 @Entity("Dossie")
 export class Dossie extends BaseModel {

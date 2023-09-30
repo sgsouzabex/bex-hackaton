@@ -1,5 +1,8 @@
 /* eslint-disable max-len */
-export const BEX_DOCUMENTS_QUERY = `
+export const BEX_DOCUMENTS_QUERY = (documents: number[]) => {
+  const documentIds = documents.map(Number);
+
+  return `
 select
     -- Contratante
     c.id              as contratante_id,
@@ -34,14 +37,14 @@ from document doc
          inner join contract co on e.id = co.employee_id and co.project_id = pe.project_id
          inner join project pro on pro.id = pe.project_id
          inner join system_pendency sp on pe.pendency_id = sp.id
-where pe.company_id = 1672
-  and pe.provider_id = 1676
-  and pe.employee_id = 16791
+where pe.company_id = $1
+  and pe.provider_id = $2
+  and pe.employee_id = $3
   and sp.id IN (
-                15, 15, 15, 27, 24, 16, 19, 23
+                ${documentIds}
     )
-  and pe.created_at between '2021-01-01'
-    and '2023-12-30'
+  and pe.created_at between $4
+    and $5
 
 union
 
@@ -79,23 +82,17 @@ from document doc
          inner join system_pendency sp on pe.pendency_id = sp.id and sp.type in (
     'PROVIDER'
     )
-where pe.company_id = 1672
-  and pe.provider_id = 1676
+where pe.company_id = $1
+  and pe.provider_id = $2
   and pe.project_id in (select project_id
                         from pendency pe
-                        where pe.company_id = 1672
-                          and pe.provider_id = 1676
-                          and pe.employee_id = 16791
+                        where pe.company_id = $1
+                          and pe.provider_id = $2
+                          and pe.employee_id = $3
                           and pe.pendency_id IN (
-                                                 15,
-                                                 15,
-                                                 15,
-                                                 27,
-                                                 24,
-                                                 16,
-                                                 19,
-                                                 23
+                            ${documentIds}
                             )
-                          and pe.created_at between '2021-01-01' and '2023-12-30')
-  and pe.created_at between '2021-01-01' and '2023-12-30';
+                          and pe.created_at between $4 and $5)
+  and pe.created_at between $4 and $5;
 `;
+};

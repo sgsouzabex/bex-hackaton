@@ -14,6 +14,6 @@ export const createDossie = async (req: Request<unknown, DossieBody[]>, res: Res
       status, body: req.body
     });
   } catch (error) {
-    return res.status(400)
+    return res.status(400).json({ status: "FAILED" })
   }
 }

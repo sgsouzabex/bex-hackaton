@@ -2,8 +2,9 @@ import { SystemsConfig } from "types/system"
 
 export const SystemsConfiguration: SystemsConfig[] = [
   {
-    "nome": "BEX-UP",
-    "url_envio_dossie": "https://us-central1-bex-hackaton.cloudfunctions.net/bexUpDossie",
+    "nome": "BEXUP",
+    // "url_envio_dossie": "https://us-central1-bex-hackaton.cloudfunctions.net/bexUpDossie",
+    "url_envio_dossie": "http://localhost:5001/bex-hackaton/us-central1/bexUpDossie",
     "url_recebimento_dossie": "https://www.google.com"
   }, {
     "nome": "V1",

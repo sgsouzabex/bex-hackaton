@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Dossie } from './dossie';
-import { BaseModel } from './baseModel';
+import { BaseModel } from '../baseModel';
 
 @Entity({ name: 'DossieDocumentos' })
 export class DossieDocumentos extends BaseModel {

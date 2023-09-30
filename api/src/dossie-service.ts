@@ -1,9 +1,50 @@
-import { DossieBody } from "types/dossie"
-const DossieConfig = require("../systems.json")
+import axios from "axios";
+import { getSystemConfig } from "../systems";
+import { DossieBody, SingleDossieRequest } from "types/dossie";
 
-export const startProcess = async (data: DossieBody[]) => {
+export const startProcess = async (items: DossieBody[]) => {
+  const payloads = items
+    .flatMap((dossieItem) => {
+      const config = getSystemConfig(dossieItem.system);
 
-  const
+      const { contractor, documents, endDate, startDate, supplier, employees } =
+        dossieItem;
 
-  return 'ok'
-}
+      const dossies = employees?.map(
+        (employee) =>
+          ({
+            config,
+            contractor,
+            documents,
+            employee,
+            endDate,
+            startDate,
+            supplier,
+          } as SingleDossieRequest)
+      );
+
+      return dossies;
+    })
+    .filter((item) => Boolean(item.config));
+
+  await Promise.all(payloads.map(sendToProcess));
+};
+
+const sendToProcess = async ({
+  config,
+  contractor,
+  documents,
+  employee,
+  endDate,
+  startDate,
+  supplier,
+}: SingleDossieRequest) => {
+  await axios.post(config.url_envio_dossie, {
+    contractor,
+    documents,
+    employee,
+    endDate,
+    startDate,
+    supplier,
+  });
+};

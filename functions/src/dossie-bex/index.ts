@@ -3,38 +3,39 @@
 import * as functions from "firebase-functions";
 import { logger } from "firebase-functions";
 import { BexDossieBody } from "./types/dossie";
-import { AppDataSourceDBBEX } from "./database/db-config";
 import { BexDocumentsResponse } from "./types/documents";
 import { BEX_DOCUMENTS_QUERY } from "./database/bex-query";
-
-
+import db from "./database/db-config";
 
 /**
  * Function responsible to create a dossie from bexUP system
  */
 const listener = async (req: functions.Request, res: functions.Response) => {
   try {
-    const bexConnection = await AppDataSourceDBBEX.initialize();
     const filter = req.body as BexDossieBody;
+    logger.info("BexUP Dossie: started.", JSON.stringify(filter));
 
-    const result = await bexConnection.manager.query<BexDocumentsResponse[]>(BEX_DOCUMENTS_QUERY);
+    const { contractor, documents, employee, endDate, startDate, supplier } =
+      filter;
+
+    const connection = await db.getManager();
+
+    const foundDocuments = await connection.query<BexDocumentsResponse[]>(
+      BEX_DOCUMENTS_QUERY(documents),
+      [contractor, supplier, employee, startDate, endDate]
+    );
 
     // TODO: ENVIAR PARA O DOCS
     // TODO: Salvar os documentos na base
 
-    logger.info("BexUP Dossie: started.", JSON.stringify(filter));
-
     logger.info("BexUP Dossie: finished.");
 
-    res.json({ filter, status: 'ok' });
+    res.json({ status: "PROCESSING", foundDocuments });
   } catch (error) {
     logger.error("BexUP Dossie: failed.", error);
 
-    // TODO: Salvar que deu erro no
-
-    // throw new Error(error);
+    res.status(400).json({ status: "FAILED" });
   }
 };
 
-export const bexUpDossie = functions.https
-  .onRequest(listener);
+export const bexUpDossie = functions.https.onRequest(listener);
